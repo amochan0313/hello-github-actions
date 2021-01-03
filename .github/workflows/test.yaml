@@ -1,0 +1,30 @@
+name: command test
+
+on:
+  workflow_dispatch:
+    branches: [main]
+
+env:
+  AWS_DEFAULT_REGION: 'ap-northeast-1'
+  AWS_ACCOUNT_ID: '111111111111'
+
+jobs:
+  command_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/master
+
+      - name: echo git version, docker version, aws version
+        run: |
+          aws --version
+          docker --version
+          git --version
+
+      - name: echo secret
+        uses: aws-actions/configure-aws-credentials@v1
+        run:|
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
